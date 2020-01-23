@@ -1,18 +1,40 @@
 import React from "react";
 import Board from "./components/Board";
+import History from "./components/History";
 
 export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      player: "X"
+      player: null,
+      players: ["X", "0"],
+      history: []
     };
   }
 
-  onBoardClick = () => {
-    this.setState({
-      player: this.state.player === "X" ? "O" : "X"
+  componentDidMount() {
+    this.setPlayer();
+  }
+
+  setPlayer = () => {
+    this.setState(state => ({
+      player: state.players[state.history.length % 2]
+    }));
+  };
+
+  setHistory = move => {
+    this.setState(state => {
+      const history = JSON.parse(JSON.stringify(state.history));
+
+      history.push(move);
+
+      return { history };
     });
+  };
+
+  onBoardClick = squares => {
+    this.setHistory(squares);
+    this.setPlayer();
   };
 
   render() {
@@ -23,7 +45,7 @@ export default class App extends React.Component {
         </div>
         <div className="game-info">
           <div>Current Player: {this.state.player}</div>
-          <ol>{/* TODO */}</ol>
+          <History history={this.state.history} />
         </div>
       </div>
     );

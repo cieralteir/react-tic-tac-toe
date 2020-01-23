@@ -23,8 +23,9 @@ export default class Board extends React.Component {
     const squares = this.state.squares.map((square, i) =>
       i === index ? this.props.player : square
     );
+
     this.setState({ squares });
-    this.props.onClick();
+    this.props.onClick(this.state.squares);
   };
 
   render() {
