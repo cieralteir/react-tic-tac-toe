@@ -8,6 +8,9 @@ export default class App extends React.Component {
     this.state = {
       player: null,
       players: ["X", "0"],
+      // board squares
+      squares: Array(9).fill(null),
+      // board history
       history: []
     };
   }
@@ -22,30 +25,46 @@ export default class App extends React.Component {
     }));
   };
 
-  setHistory = move => {
+  setBoard = squares => {
+    this.setState({ squares });
     this.setState(state => {
       const history = JSON.parse(JSON.stringify(state.history));
-
-      history.push(move);
-
+      history.push(squares);
       return { history };
     });
   };
 
-  onBoardClick = squares => {
-    this.setHistory(squares);
+  handleBoardClick = squares => {
+    this.setBoard(squares);
     this.setPlayer();
+  };
+
+  handleHistoryClick = index => {
+    this.setState(state => {
+      const history = JSON.parse(JSON.stringify(state.history));
+      return {
+        squares: state.history[index],
+        history: history.slice(0, index + 1)
+      };
+    });
   };
 
   render() {
     return (
       <div className="game">
         <div className="game-board">
-          <Board player={this.state.player} onClick={this.onBoardClick} />
+          <Board
+            player={this.state.player}
+            squares={this.state.squares}
+            onClick={this.handleBoardClick}
+          />
         </div>
         <div className="game-info">
           <div>Current Player: {this.state.player}</div>
-          <History history={this.state.history} />
+          <History
+            history={this.state.history}
+            onClick={this.handleHistoryClick}
+          />
         </div>
       </div>
     );

@@ -2,30 +2,21 @@ import React from "react";
 import Square from "./Square";
 
 export default class Board extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      squares: Array(9).fill(null)
-    };
-  }
-
   renderSquare = index => {
     return (
       <Square
-        value={this.state.squares[index]}
+        value={this.props.squares[index]}
         index={index}
-        onClick={this.onSquareClick}
+        onClick={this.handleSquareClick}
       />
     );
   };
 
-  onSquareClick = index => {
-    const squares = this.state.squares.map((square, i) =>
+  handleSquareClick = index => {
+    const squares = this.props.squares.map((square, i) =>
       i === index ? this.props.player : square
     );
-
-    this.setState({ squares });
-    this.props.onClick(this.state.squares);
+    this.props.onClick(squares);
   };
 
   render() {
