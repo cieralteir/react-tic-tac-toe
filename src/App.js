@@ -45,14 +45,16 @@ export default class App extends React.Component {
     }
   };
 
-  handleHistoryClick = index => {
-    this.setState(state => {
+  handleHistoryClick = async index => {
+    await this.setState(state => {
       const history = JSON.parse(JSON.stringify(state.history));
       return {
         squares: state.history[index],
         history: history.slice(0, index + 1)
       };
     });
+    this.checkWinner();
+    this.setPlayer();
   };
 
   checkWinner = () => {
@@ -62,11 +64,13 @@ export default class App extends React.Component {
       this.checkSlanting()
     ) {
       this.setState({ isOver: true });
+    } else {
+      this.setState({ isOver: false });
     }
   };
 
   checkHorizontal = () => {
-    for (let x = 0; x < 9; x + 3) {
+    for (let x = 0; x < 9; x += 3) {
       if (
         this.state.squares[x] !== null &&
         this.state.squares[x] === this.state.squares[x + 1] &&
@@ -74,9 +78,9 @@ export default class App extends React.Component {
       ) {
         return true;
       }
-
-      return false;
     }
+
+    return false;
   };
 
   checkVertical = () => {
