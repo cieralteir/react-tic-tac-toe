@@ -57,6 +57,14 @@ export default class App extends React.Component {
     this.setPlayer();
   };
 
+  handleHistoryReset = () => {
+    this.setState({
+      squares: Array(9).fill(null),
+      history: []
+    });
+    this.setPlayer();
+  };
+
   checkWinner = () => {
     if (
       this.checkHorizontal() ||
@@ -135,6 +143,7 @@ export default class App extends React.Component {
           <History
             history={this.state.history}
             onClick={this.handleHistoryClick}
+            onReset={this.handleHistoryReset}
           />
         </div>
       </div>

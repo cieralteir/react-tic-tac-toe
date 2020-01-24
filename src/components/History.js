@@ -5,6 +5,10 @@ export default class History extends React.Component {
     this.props.onClick(index);
   };
 
+  reset = () => {
+    this.props.onReset();
+  };
+
   render() {
     const history = this.props.history.map((squares, index) => (
       <li key={index}>
@@ -17,7 +21,7 @@ export default class History extends React.Component {
     const historyList = (
       <ul>
         <li>
-          <button>Go to start</button>
+          <button onClick={this.reset}>Reset</button>
         </li>
         {history}
       </ul>
